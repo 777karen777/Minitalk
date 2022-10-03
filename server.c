@@ -41,14 +41,18 @@ char *make_binary(char c)
 
 void	send_signal(char *str, int pid)
 {
-	while (*str)
+	int	i;
+
+	i = 0;
+	while (str[i])
 	{
-		if (str == '0')
+		if (str[i] == '0')
 			kill(pid, SIGUSR1);
 		else
 			kill(pid, SIGUSR2);
-		*str++;
+		i++;
 	}
+	free (str);
 }
 
 int	main(int argc, char **argv)
