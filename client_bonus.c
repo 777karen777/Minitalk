@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.c                                           :+:      :+:    :+:   */
+/*   client_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: knikogho <knikogho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 12:52:03 by knikogho          #+#    #+#             */
-/*   Updated: 2022/10/08 11:51:41 by knikogho         ###   ########.fr       */
+/*   Updated: 2022/10/08 11:50:47 by knikogho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,12 @@ void	send_signal(char *message, int pid)
 	shift('\0', pid);
 }
 
+void	handler(int signum)
+{
+	(void) signum;
+	ft_putstr("Message successefuly sent ✅!\n");
+}
+
 int	main(int ac, char **av)
 {
 	int	pid;
@@ -49,6 +55,7 @@ int	main(int ac, char **av)
 	if (ac == 3)
 	{
 		pid = ft_atoi(av[1]);
+		signal(SIGUSR1, handler);
 		send_signal(av[2], pid);
 		usleep(100);
 		exit(0);

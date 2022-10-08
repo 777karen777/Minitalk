@@ -1,57 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.c                                           :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: knikogho <knikogho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/07 12:52:03 by knikogho          #+#    #+#             */
-/*   Updated: 2022/10/08 11:51:41 by knikogho         ###   ########.fr       */
+/*   Created: 2022/08/25 17:58:46 by knikogho          #+#    #+#             */
+/*   Updated: 2022/10/08 11:52:15 by knikogho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-void	shift(char c, int pid)
-{
-	int	bit;
-
-	bit = 0;
-	while (bit < 8)
-	{
-		if (c & 128)
-			kill(pid, SIGUSR2);
-		else
-			kill(pid, SIGUSR1);
-		c <<= 1;
-		bit++;
-		usleep(500);
-	}
-}
-
-void	send_signal(char *message, int pid)
+int	ft_atoi(const char *s)
 {
 	int	i;
+	int	num;
+	int	sign;
 
 	i = 0;
-	while (message[i])
+	num = 0;
+	sign = 1;
+	while (s[i] == ' ' || s[i] == '\t' || s[i] == '\n'
+		|| s[i] == '\v' || s[i] == '\f' || s[i] == '\r')
+		i++;
+	if (s[i] == '-')
 	{
-		shift(message[i], pid);
+		sign = -1;
 		i++;
 	}
-	shift('\0', pid);
-}
-
-int	main(int ac, char **av)
-{
-	int	pid;
-
-	if (ac == 3)
+	else if (s[i] == '+')
+		i++;
+	while (s[i] >= '0' && s[i] <= '9')
 	{
-		pid = ft_atoi(av[1]);
-		send_signal(av[2], pid);
-		usleep(100);
-		exit(0);
+		num = (num * 10) + (s[i] - '0');
+		i++;
 	}
-	ft_putstr(ERR_ARG);
+	return (num * sign);
 }

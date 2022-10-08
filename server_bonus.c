@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.c                                           :+:      :+:    :+:   */
+/*   server_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: knikogho <knikogho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 14:35:36 by knikogho          #+#    #+#             */
-/*   Updated: 2022/10/08 11:55:51 by knikogho         ###   ########.fr       */
+/*   Updated: 2022/10/08 11:55:04 by knikogho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void	handler(int sig, siginfo_t *info, void *p)
 	static char	byte;
 
 	(void)p;
-	(void)info;
 	if (sig == SIGUSR2)
 	{
 		(byte |= (128 >> i));
@@ -28,6 +27,8 @@ void	handler(int sig, siginfo_t *info, void *p)
 		i++;
 	if (i == 8)
 	{
+		if (!byte)
+			kill(info->si_pid, SIGUSR1);
 		write(1, &byte, 1);
 		i = 0;
 		byte = 0;
@@ -60,5 +61,5 @@ int	main(void)
 	{
 		pause();
 	}	
-	return (0);
+	exit(1);
 }
